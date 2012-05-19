@@ -46,11 +46,11 @@
 #define BLBN_POLICY_GSFL         6 // Generalized Single-Feature Lookahead (for Bayesian networks)
 #define BLBN_POLICY_RSFL         3 // Randomized Single-Feature Lookahead
 #define BLBN_POLICY_GRSFL        30 // Generalized Randomized Single-Feature Lookahead (for Bayesian networks)
-#define BLBN_POLICY_EMPG         4 // "Tell Me What I Want to Hear" // Note that we call this algorithm MERPG later
+#define BLBN_POLICY_MERPG         4 // "Tell Me What I Want to Hear" // Note that we call this algorithm MERPG later
 #define BLBN_POLICY_CHEATING     5 // Cheating algorithm
-#define BLBN_POLICY_EMPGDSEP 	16    // EMPG algorithm and d_separation as a tie-breaker
-#define BLBN_POLICY_EMPGDSEPW1  27    // EMPG algorithm and d_separation as a regular weighting factor
-#define BLBN_POLICY_EMPGDSEPW2  38    // EMPG algorithm and d_separation as a log weighting factor
+#define BLBN_POLICY_MERPGDSEP 	16    // MERPG algorithm and d_separation as a tie-breaker
+#define BLBN_POLICY_MERPGDSEPW1  27    // MERPG algorithm and d_separation as a regular weighting factor
+#define BLBN_POLICY_MERPGDSEPW2  38    // MERPG algorithm and d_separation as a log weighting factor
 #define BLBN_POLICY_RANDOM 49
 
 // The global Netica environment structure
@@ -181,15 +181,15 @@ blbn_select_action_t* blbn_select_next_gsfl (blbn_state_t *state);
 blbn_select_action_t* blbn_select_next_rsfl (blbn_state_t *state, int K, double tao);
 blbn_select_action_t* blbn_select_next_grsfl (blbn_state_t *state, int K, double tao);
 
-blbn_select_action_t* blbn_select_next_empg (blbn_state_t *state);
-blbn_select_action_t* blbn_select_next_empgdsep (blbn_state_t *state);
-blbn_select_action_t* blbn_select_next_empgdsepw1 (blbn_state_t *state);
-blbn_select_action_t* blbn_select_next_empgdsepw2 (blbn_state_t *state);
+blbn_select_action_t* blbn_select_next_merpg (blbn_state_t *state);
+blbn_select_action_t* blbn_select_next_merpgdsep (blbn_state_t *state);
+blbn_select_action_t* blbn_select_next_merpgdsepw1 (blbn_state_t *state);
+blbn_select_action_t* blbn_select_next_merpgdsepw2 (blbn_state_t *state);
 
 blbn_select_action_t* blbn_select_next_cheating (blbn_state_t *state, FILE* log_fp);
 blbn_select_action_t* blbn_select_next_random(blbn_state_t *state);
 
-double** blbn_util_empg (blbn_state_t *state);
+double** blbn_util_merpg (blbn_state_t *state);
 int** blbn_util_dsep (blbn_state_t *state);
 int blbn_get_d_separated_nodes (blbn_state_t *state, unsigned int node_index, int **d_separated_node_indices);
 int blbn_get_d_separated_node_count (blbn_state_t *state, unsigned int node_index);

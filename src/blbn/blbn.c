@@ -1879,21 +1879,21 @@ blbn_select_action_t* blbn_learn1(blbn_state_t *state, int policy, FILE* graph_f
 		} else if (policy == BLBN_POLICY_GRSFL) {
 			//printf("policy is grsfl!\n");
 			curr_action = blbn_select_next_grsfl (state, 10, 1);
-		} else if (policy == BLBN_POLICY_EMPG) {
-			//printf("policy is empg!\n");
-			curr_action = blbn_select_next_empg (state);
+		} else if (policy == BLBN_POLICY_MERPG) {
+			//printf("policy is merpg!\n");
+			curr_action = blbn_select_next_merpg (state);
 		} else if (policy == BLBN_POLICY_CHEATING) {
 			//printf("policy is cheating!\n");
 			curr_action = blbn_select_next_cheating (state, log_fp);
-		} else if (policy == BLBN_POLICY_EMPGDSEP){
-			//printf("yes, we call blbn_select_next_empgdsep!\n");
-			curr_action = blbn_select_next_empgdsep(state);
-		} else if (policy == BLBN_POLICY_EMPGDSEPW1){
-			//printf("yes, we call blbn_select_next_empgdsepw1!\n");
-			curr_action = blbn_select_next_empgdsepw1(state);
-		} else if (policy == BLBN_POLICY_EMPGDSEPW2){
-			//printf("yes, we call blbn_select_next_empgdsepw2!\n");
-			curr_action = blbn_select_next_empgdsepw2(state);
+		} else if (policy == BLBN_POLICY_MERPGDSEP){
+			//printf("yes, we call blbn_select_next_merpgdsep!\n");
+			curr_action = blbn_select_next_merpgdsep(state);
+		} else if (policy == BLBN_POLICY_MERPGDSEPW1){
+			//printf("yes, we call blbn_select_next_merpgdsepw1!\n");
+			curr_action = blbn_select_next_merpgdsepw1(state);
+		} else if (policy == BLBN_POLICY_MERPGDSEPW2){
+			//printf("yes, we call blbn_select_next_merpgdsepw2!\n");
+			curr_action = blbn_select_next_merpgdsepw2(state);
 		} else {
 			printf("none of these policies!");
 		}
@@ -2894,10 +2894,10 @@ blbn_select_action_t* blbn_select_next_grsfl (blbn_state_t *state, int K, double
 }
 
 /**
- * Expected Maximum Purchase Gain (EMPG)
+ * Maximization of Expected Relative Probability Gain (MERPG)
  * i.e., the "Tell Me What I Want To Hear" algorithm
  */
-blbn_select_action_t* blbn_select_next_empg (blbn_state_t *state) {
+blbn_select_action_t* blbn_select_next_merpg (blbn_state_t *state) {
 
 	blbn_select_action_t *prev_action = NULL;
 	blbn_select_action_t *curr_action = NULL;
@@ -2949,7 +2949,7 @@ blbn_select_action_t* blbn_select_next_empg (blbn_state_t *state) {
 		//------------------------------------------------------------------------------
 
 		// Get SFL values for row
-		gain_values = blbn_util_empg (state);
+		gain_values = blbn_util_merpg (state);
 
 		for (j = 0; j < state->case_count; ++j) {
 
@@ -3223,11 +3223,11 @@ int blbn_get_node_index (blbn_state_t *state, char* node_name) {
 
 
 /**
- * Expected Maximum Purchase Gain (EMPG) and make d-separation
+ * Expected Maximum Purchase Gain (MERPG) and make d-separation
  * (number of increased d-separations as a tie-breaker)
  * i.e., the "Tell Me What I Want To Hear" algorithm
  */
-blbn_select_action_t* blbn_select_next_empgdsep (blbn_state_t *state) {
+blbn_select_action_t* blbn_select_next_merpgdsep (blbn_state_t *state) {
 
 	blbn_select_action_t *prev_action = NULL;
 	blbn_select_action_t *curr_action = NULL;
@@ -3285,12 +3285,12 @@ blbn_select_action_t* blbn_select_next_empgdsep (blbn_state_t *state) {
 		//------------------------------------------------------------------------------
 
 		// Get SFL values for row
-		gain_values = blbn_util_empg(state);
+		gain_values = blbn_util_merpg(state);
 		dsep_values = blbn_util_dsep(state);
 
 		for (j = 0; j < state->case_count; ++j) {
 
-			// Get minimum EMPG value for row
+			// Get minimum MERPG value for row
 			//for (i = 0; i < state->node_count; ++i) {
 			int ii=0;
 			// nodes_consider[0] is the number of nodes in the filtered Markov Blanket
@@ -3328,7 +3328,7 @@ blbn_select_action_t* blbn_select_next_empgdsep (blbn_state_t *state) {
 
 		//printf ("selected (%d, %d)\n", curr_action->node_index, curr_action->case_index);
 
-		// Free EMPG values for row
+		// Free MERPG values for row
 		int ii=0;
 		for (ii=0; ii<state->nodes_consider[0];ii++){
 			free (gain_values[ii]);
@@ -3342,13 +3342,13 @@ blbn_select_action_t* blbn_select_next_empgdsep (blbn_state_t *state) {
 }
 
 /**
- * Expected Maximum Purchase Gain (EMPG) and make d-separation
+ * Expected Maximum Purchase Gain (MERPG) and make d-separation
  * (number of increased d-separations as a weighting factor)
  * if the number of weighting factor is >=0, then the weighting factor is 1+number of increased d-separations
  * if the number of weighting factor is <=-1, then the weighting factor is 1/(1 + number of reduced d-separations)
  * i.e., the "Tell Me What I Want To Hear" algorithm
  */
-blbn_select_action_t* blbn_select_next_empgdsepw1 (blbn_state_t *state) {
+blbn_select_action_t* blbn_select_next_merpgdsepw1 (blbn_state_t *state) {
 
 	blbn_select_action_t *prev_action = NULL;
 	blbn_select_action_t *curr_action = NULL;
@@ -3406,7 +3406,7 @@ blbn_select_action_t* blbn_select_next_empgdsepw1 (blbn_state_t *state) {
 		//------------------------------------------------------------------------------
 
 		// Get SFL values for row
-		gain_values = blbn_util_empg(state);
+		gain_values = blbn_util_merpg(state);
 		dsep_values = blbn_util_dsep(state);
 
 		double factor = 1;
@@ -3414,7 +3414,7 @@ blbn_select_action_t* blbn_select_next_empgdsepw1 (blbn_state_t *state) {
 
 		for (j = 0; j < state->case_count; ++j) {
 
-			// Get minimum EMPG value for row
+			// Get minimum MERPG value for row
 			int ii=0;
 			for (ii=0; ii<state->nodes_consider[0];ii++){
 				i = state->nodes_consider[1+ii];
@@ -3448,7 +3448,7 @@ blbn_select_action_t* blbn_select_next_empgdsepw1 (blbn_state_t *state) {
 
 		//printf ("selected (%d, %d)\n", curr_action->node_index, curr_action->case_index);
 
-		// Free EMPG values for row
+		// Free MERPG values for row
 		int ii=0;
 		for (ii=0; ii<state->nodes_consider[0];ii++){
 			free (gain_values[ii]);
@@ -3463,13 +3463,13 @@ blbn_select_action_t* blbn_select_next_empgdsepw1 (blbn_state_t *state) {
 
 
 /**
- * Expected Maximum Purchase Gain (EMPG) and make d-separation
+ * Expected Maximum Purchase Gain (MERPG) and make d-separation
  * (number of increased d-separations as a weighting factor)
  * if the number of weighting factor is >=0, then the weighting factor is log(e+number of increased d-separations)
  * if the number of weighting factor is <=-1, then the weighting factor is 1/log(e + number of reduced d-separations)
  * i.e., the "Tell Me What I Want To Hear" algorithm
  */
-blbn_select_action_t* blbn_select_next_empgdsepw2 (blbn_state_t *state) {
+blbn_select_action_t* blbn_select_next_merpgdsepw2 (blbn_state_t *state) {
 
 	blbn_select_action_t *prev_action = NULL;
 	blbn_select_action_t *curr_action = NULL;
@@ -3522,7 +3522,7 @@ blbn_select_action_t* blbn_select_next_empgdsepw2 (blbn_state_t *state) {
 		//------------------------------------------------------------------------------
 
 		// Get SFL values for row
-		gain_values = blbn_util_empg(state);
+		gain_values = blbn_util_merpg(state);
 		dsep_values = blbn_util_dsep(state);
 
 		double factor = 1;
@@ -3531,7 +3531,7 @@ blbn_select_action_t* blbn_select_next_empgdsepw2 (blbn_state_t *state) {
 
 		for (j = 0; j < state->case_count; ++j) {
 
-			// Get minimum EMPG value for row
+			// Get minimum MERPG value for row
 			//for (i = 0; i < state->node_count; ++i) {
 			int ii=0;
 			for (ii=0; ii<state->nodes_consider[0];ii++){
@@ -3566,7 +3566,7 @@ blbn_select_action_t* blbn_select_next_empgdsepw2 (blbn_state_t *state) {
 
 		//printf ("selected (%d, %d)\n", curr_action->node_index, curr_action->case_index);
 
-		// Free EMPG values for row
+		// Free MERPG values for row
 		int ii=0;
 		for (ii=0; ii<state->nodes_consider[0];ii++){
 			free (gain_values[ii]);
@@ -4169,13 +4169,13 @@ void blbn_util_print_findings (blbn_state_t *state) {
 
 
 /**
- * EMPG - Expected Maximum Prediction (Performance) Gain
+ * MERPG - Expected Maximum Prediction (Performance) Gain
  *
  * This algorithm selects a non-purchased (node i, case j) pair with a
  * maximal expected percent increase in the probability of predicting the
  * correct target value.
  */
-double** blbn_util_empg (blbn_state_t *state) {
+double** blbn_util_merpg (blbn_state_t *state) {
 
 	double **percent_diff_values = NULL;
 	int i = 0, j = 0, k = 0;
@@ -4187,7 +4187,7 @@ double** blbn_util_empg (blbn_state_t *state) {
 	double current_target_probability;
 	double expected_target_probability;
 
-	// Initialize EMPG values
+	// Initialize MERPG values
 	//percent_diff_values = (double **) malloc (state->node_count * sizeof (double *));
 	percent_diff_values = (double **) malloc (state->nodes_consider[0] * sizeof(double*));
 
@@ -4303,7 +4303,7 @@ int** blbn_util_dsep (blbn_state_t *state) {
 /**
  * "Cheating algorithm"
  *
- * (OLD DESCRIPTION) FROM EMPG:
+ * (OLD DESCRIPTION) FROM MERPG:
  * This algorithm computes the probability of each possible state k of node i
  * in case j weighted by (i.e., multiplied by) the expected log loss
  * reduction (i.e., improvement).  Note that the weight value (i.e., the log

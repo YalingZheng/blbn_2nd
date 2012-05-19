@@ -323,26 +323,26 @@ int main (int argc, char *argv[]) {
 			blbn_learn_4_networks(state_naive, state_naive_choice_Bayesian,
 					state_Bayesian, state_Bayesian_choice_naive,
 					BLBN_POLICY_GRSFL);
-		} else if ((strcmp(policy, "empg") == 0) || (strcmp(policy, "MBempg")
+		} else if ((strcmp(policy, "merpg") == 0) || (strcmp(policy, "MBmerpg")
 				== 0)) {
 			blbn_learn_4_networks(state_naive, state_naive_choice_Bayesian,
 					state_Bayesian, state_Bayesian_choice_naive,
-					BLBN_POLICY_EMPG);
+					BLBN_POLICY_MERPG);
 		} else if ((strcmp(policy, "dsep") == 0) || (strcmp(policy, "MBdsep")
 				== 0)) {
 			blbn_learn_4_networks(state_naive, state_naive_choice_Bayesian,
 					state_Bayesian, state_Bayesian_choice_naive,
-					BLBN_POLICY_EMPGDSEP);
+					BLBN_POLICY_MERPGDSEP);
 		} else if ((strcmp(policy, "dsepw1") == 0) || (strcmp(policy,
 				"MBdsepw1") == 0)) {
 			blbn_learn_4_networks(state_naive, state_naive_choice_Bayesian,
 					state_Bayesian, state_Bayesian_choice_naive,
-					BLBN_POLICY_EMPGDSEPW1);
+					BLBN_POLICY_MERPGDSEPW1);
 		} else if ((strcmp(policy, "dsepw2") == 0) || (strcmp(policy,
 				"MBdsepw2") == 0)) {
 			blbn_learn_4_networks(state_naive, state_naive_choice_Bayesian,
 					state_Bayesian, state_Bayesian_choice_naive,
-					BLBN_POLICY_EMPGDSEPW2);
+					BLBN_POLICY_MERPGDSEPW2);
 		} else if ((strcmp(policy, "cheating") == 0) || (strcmp(policy,
 				"MBcheating") == 0)) {
 			blbn_learn_4_networks(state_naive, state_naive_choice_Bayesian,
