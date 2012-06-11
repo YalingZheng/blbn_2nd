@@ -1,0 +1,15 @@
+add a new repo blbn at github.com
+
+cd blbn
+
+git init
+
+git remote add origin git@github.com:YalingZheng/blbn.git
+
+git add src
+
+git commit -m "first"
+
+git push origin master
+
+DONE!
