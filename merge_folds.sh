@@ -1,0 +1,5 @@
+#!/bin/bash
+ruby merge_folds_naive_choice_naive.rb
+ruby merge_folds_naive_choice_Bayesian.rb
+ruby merge_folds_Bayesian_choice_naive.rb
+ruby merge_folds_Bayesian_choice_Bayesian.rb
